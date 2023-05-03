@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    env_file:
+      - .env
+    expose:
+      - "5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    
+  django:
+    build: ./currency_converter
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    expose:
+      - 8000
+    volumes:
+      - ./currency_converter/static:/opt/converter/static:rw
+      # - ./currency_converter/media:/opt/converter/media:rw
+
+  nginx:
+    container_name: nginx
+    image: nginx:1.23.2
+    depends_on:
+      django:
+        condition: service_started
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/config:/etc/nginx/conf.d:ro
+      - ./currency_converter/static:/data/static:ro
