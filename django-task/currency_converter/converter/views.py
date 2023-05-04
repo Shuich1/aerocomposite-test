@@ -42,11 +42,13 @@ class CurrencyConverterView(View):
         error_message = ''
         for field_name, error_list in form.errors.items():
             error_message += f'{field_name.capitalize()}: {error_list[0]}.'
-        
+
         from_currency, to_currency = None, None
 
         if form.data.get('from_currency'):
-            from_currency = Currency.objects.get(pk=form.data.get('from_currency'))
+            from_currency = Currency.objects.get(
+                pk=form.data.get('from_currency')
+            )
         if form.data.get('to_currency'):
             to_currency = Currency.objects.get(pk=form.data.get('to_currency'))
 
