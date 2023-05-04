@@ -39,6 +39,11 @@
             </div>
             <button type="submit" class="btn btn-primary">Convert</button>
         </form>
+        {% if error_message %}
+        <div class="alert alert-danger mt-4">
+            <p class="mb-0">{{ error_message }}</p>
+        </div>
+        {% endif %}
         {% if converted_amount %}
         <div class="alert alert-success mt-4">
             <p class="mb-0">{{ amount }} {{ from_currency.short_name }} = {{ converted_amount }} {{ to_currency.short_name }}</p>
