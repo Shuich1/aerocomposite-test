@@ -1,7 +1,7 @@
 import math
 
+from typing import Dict, Any
 from django import forms
-
 from .models import Currency, CurrencyConversionRate
 
 
@@ -10,7 +10,7 @@ class CurrencyConversionForm(forms.Form):
     from_currency = forms.ModelChoiceField(queryset=Currency.objects.all())
     to_currency = forms.ModelChoiceField(queryset=Currency.objects.all())
 
-    def clean(self):
+    def clean(self) -> Dict[str, Any]:
         cleaned_data = super().clean()
 
         from_currency = cleaned_data.get('from_currency')

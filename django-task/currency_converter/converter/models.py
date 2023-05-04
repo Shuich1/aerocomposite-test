@@ -37,6 +37,6 @@ class CurrencyConversionRate(models.Model):
         verbose_name = _('ConversionRate')
         verbose_name_plural = _('ConversionRates')
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.from_currency.short_name} to ' \
             f'{self.to_currency.short_name}: {self.rate}'

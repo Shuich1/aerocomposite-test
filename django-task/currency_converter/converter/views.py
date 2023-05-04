@@ -1,6 +1,6 @@
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import View
-from django.http import HttpRequest, HttpResponse
 
 from .forms import CurrencyConversionForm
 from .models import Currency
