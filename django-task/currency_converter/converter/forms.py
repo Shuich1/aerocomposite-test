@@ -30,7 +30,7 @@ class CurrencyConversionForm(forms.Form):
                     from_currency=to_currency,
                     to_currency=from_currency
                 )
-            except CurrencyConversionRate.DoesNotExist:
+            except Exception:
                 raise forms.ValidationError("Conversion rate not found")
 
             rate = 1 / inverse_conversion_rate.rate
@@ -38,6 +38,8 @@ class CurrencyConversionForm(forms.Form):
                 rate,
                 int(-math.floor(math.log10(abs(rate - int(rate))))) + 3
             )
+        except Exception:
+                raise forms.ValidationError("Conversion rate not found")
         else:
             rate = conversion_rate.rate
             cleaned_data['conversion_rate'] = round(
