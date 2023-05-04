@@ -1,4 +1,4 @@
-# aerocomposite-test
+# Тестовое задание в АО "АэроКомпозит"
 
 ## islands.py
 
