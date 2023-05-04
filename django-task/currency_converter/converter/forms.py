@@ -18,19 +18,19 @@ class CurrencyConversionForm(forms.Form):
 
         if from_currency == to_currency:
             raise forms.ValidationError("Please select different currencies")
-
-        conversion_rate = CurrencyConversionRate.objects.filter(
-            from_currency=from_currency,
-            to_currency=to_currency
-        ).first()
-
-        if not conversion_rate:
-            inverse_conversion_rate = CurrencyConversionRate.objects.filter(
-                from_currency=to_currency,
-                to_currency=from_currency
-            ).first()
-
-            if not inverse_conversion_rate:
+        
+        try:
+            conversion_rate = CurrencyConversionRate.objects.get(
+                from_currency=from_currency,
+                to_currency=to_currency
+            )
+        except CurrencyConversionRate.DoesNotExist:
+            try:
+                inverse_conversion_rate = CurrencyConversionRate.objects.get(
+                    from_currency=to_currency,
+                    to_currency=from_currency
+                )
+            except CurrencyConversionRate.DoesNotExist:
                 raise forms.ValidationError("Conversion rate not found")
 
             rate = 1 / inverse_conversion_rate.rate
